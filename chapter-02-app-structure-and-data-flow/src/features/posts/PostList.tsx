@@ -1,8 +1,9 @@
 import {useAppSelector} from "../../hooks/useAppSelector";
+import {selectAllPosts} from "./postsSlice";
 
 const PostList = () => {
     // const posts = useSelector<RootState, { id: string, title: string, content: string }[]>(state => state.posts);
-    const posts = useAppSelector(state => state.posts);
+    const posts = useAppSelector(selectAllPosts);
     const renderPosts = posts.map(post => (
         <article key={post.id}>
             <h3>{post.title}</h3>
