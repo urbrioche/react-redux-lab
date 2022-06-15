@@ -1,7 +1,13 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {RootState} from "../../app/store";
 
-const initialState = [
+interface Post {
+    id: string;
+    title: string;
+    content: string;
+}
+
+const initialState: Post[] = [
     {
         id: '1',
         title: 'Learning Redux Toolkit',
@@ -17,12 +23,17 @@ const initialState = [
 const postSlice = createSlice({
         name: 'posts',
         initialState,
-        reducers: {},
+        reducers: {
+            postAdded(state, action: PayloadAction<Post>) {
+                state.push(action.payload);
+            }
+        },
     }
 );
 
 // reference: https://redux.js.org/usage/usage-with-typescript#define-root-state-and-dispatch-types
 // export const selectAllPosts = (state: any) => state.posts;
 export const selectAllPosts = (state: RootState) => state.posts;
+export const {postAdded} = postSlice.actions;
 
 export default postSlice.reducer;

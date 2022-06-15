@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import PostList from "./features/posts/PostList";
 import {Provider} from "react-redux";
 import {store} from "./app/store";
+import AddPostForm from "./features/posts/AddPostForm";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -12,6 +13,7 @@ const root = ReactDOM.createRoot(
 root.render(
     <React.StrictMode>
         <Provider store={store}>
+            <AddPostForm/>
             <PostList/>
         </Provider>
     </React.StrictMode>
