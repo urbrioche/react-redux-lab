@@ -2,6 +2,7 @@ import {createSlice, nanoid, PayloadAction} from "@reduxjs/toolkit";
 import {RootState} from "../../app/store";
 
 interface Post {
+    userId: string;
     id: string;
     title: string;
     content: string;
@@ -12,11 +13,13 @@ const initialState: Post[] = [
         id: '1',
         title: 'Learning Redux Toolkit',
         content: "I've heard good things.",
+        userId: '',
     },
     {
         id: '2',
         title: 'Slices...',
         content: "The more I say slice, the more I want pizza.",
+        userId: '',
     }
 ];
 
@@ -28,12 +31,13 @@ const postSlice = createSlice({
                 reducer(state, action: PayloadAction<Post>) {
                     state.push(action.payload);
                 },
-                prepare(title: string, content: string) {
+                prepare(title: string, content: string, userId: string) {
                     return {
                         payload: {
                             id: nanoid(),
                             title,
-                            content
+                            content,
+                            userId,
                         }
                     };
                 }
