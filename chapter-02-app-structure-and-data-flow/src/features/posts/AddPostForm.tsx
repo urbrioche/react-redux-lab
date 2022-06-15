@@ -13,11 +13,10 @@ const AddPostForm = () => {
     const onContentChanged = (e: ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value);
     const onSavePostClicked = () => {
         if (title && content) {
-            dispatch(postAdded({
-                id: nanoid(),
+            dispatch(postAdded(
                 title,
                 content,
-            }));
+            ));
             setTitle('');
             setContent('');
         }
