@@ -1,6 +1,7 @@
 import {useAppSelector} from "../../hooks/useAppSelector";
 import {selectAllPosts} from "./postsSlice";
 import PostAuthor from "./PostAuthor";
+import TimeAgo from "./TimeAgo";
 
 const PostList = () => {
     // const posts = useSelector<RootState, { id: string, title: string, content: string }[]>(state => state.posts);
@@ -11,6 +12,7 @@ const PostList = () => {
             <h3>{post.content.substring(0, 100)}</h3>
             <p className="postCredit">
                 <PostAuthor userId={post.userId}/>
+                <TimeAgo timestamp={post.date}/>
             </p>
         </article>
     ));
