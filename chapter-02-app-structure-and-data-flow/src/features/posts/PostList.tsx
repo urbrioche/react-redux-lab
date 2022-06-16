@@ -2,6 +2,7 @@ import {useAppSelector} from "../../hooks/useAppSelector";
 import {selectAllPosts} from "./postsSlice";
 import PostAuthor from "./PostAuthor";
 import TimeAgo from "./TimeAgo";
+import ReactionButtons from "./ReactionButtons";
 
 const PostList = () => {
     // const posts = useSelector<RootState, { id: string, title: string, content: string }[]>(state => state.posts);
@@ -14,6 +15,7 @@ const PostList = () => {
                 <PostAuthor userId={post.userId}/>
                 <TimeAgo timestamp={post.date}/>
             </p>
+            <ReactionButtons post={post}/>
         </article>
     ));
     return <>
