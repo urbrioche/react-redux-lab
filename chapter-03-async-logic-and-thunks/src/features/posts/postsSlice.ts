@@ -12,7 +12,7 @@ interface Reactions {
 }
 
 export interface Post {
-    userId: string;
+    userId: number;
     id: string;
     title: string;
     body: string;
@@ -20,13 +20,13 @@ export interface Post {
     reactions: Reactions;
 }
 
-type status = 'idle' | 'loading' | 'succeeded' | 'failed'
+export type Status = 'idle' | 'loading' | 'succeeded' | 'failed' | 'pending'
 
 const POSTS_URL = 'https://jsonplaceholder.typicode.com/posts';
 
 const initialState: {
     posts: Post[];
-    status: status;
+    status: Status;
     error: string | null;
 } = {
     posts: [],
@@ -39,6 +39,11 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
     return response.data;
 });
 
+export const addNewPost = createAsyncThunk('posts/addNewPost', async (initialPost: Post) => {
+    const response = await axios.post(POSTS_URL, initialPost);
+    return response.data;
+});
+
 const postSlice = createSlice({
         name: 'posts',
         initialState,
@@ -47,7 +52,7 @@ const postSlice = createSlice({
                 reducer(state, action: PayloadAction<Post>) {
                     state.posts.push(action.payload);
                 },
-                prepare(title: string, body: string, userId: string) {
+                prepare(title: string, body: string, userId: number) {
                     return {
                         payload: {
                             id: nanoid(),
@@ -103,6 +108,19 @@ const postSlice = createSlice({
                 .addCase(fetchPosts.rejected, (state, action) => {
                     state.status = 'failed';
                     state.error = action.error.message || '';
+                })
+                .addCase(addNewPost.fulfilled, (state, action: PayloadAction<Post>) => {
+                    const post = action.payload;
+                    post.date = new Date().toISOString();
+                    post.reactions = {
+                        thumbsUp: 0,
+                        wow: 0,
+                        heart: 0,
+                        rocket: 0,
+                        coffee: 0,
+                    };
+                    console.log(action.payload);
+                    state.posts.push(action.payload);
                 });
 
         }

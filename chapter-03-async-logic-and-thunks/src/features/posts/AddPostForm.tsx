@@ -1,6 +1,6 @@
 import {ChangeEvent, useState} from "react";
 import {useAppDispatch} from "../../hooks/useAppDispatch";
-import {postAdded} from "./postsSlice";
+import {postAdded, addNewPost, Status, Post} from "./postsSlice";
 import {selectAllUsers} from "../users/usersSlice";
 import {useAppSelector} from "../../hooks/useAppSelector";
 
@@ -9,32 +9,53 @@ const AddPostForm = () => {
 
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const [userId, setUserId] = useState('');
+    const [userId, setUserId] = useState(0);
+    const [addRequestStatus, setAddRequestStatus] = useState<Status>('idle');
     const users = useAppSelector(selectAllUsers);
 
     const onTitleChanged = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
     const onContentChanged = (e: ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value);
-    const onAuthorChange = (e: ChangeEvent<HTMLSelectElement>) => setUserId(e.target.value);
+    const onAuthorChange = (e: ChangeEvent<HTMLSelectElement>) => setUserId(Number(e.target.value));
+
+    const canSave = [title, content, userId].every(Boolean) && addRequestStatus === 'idle';
+
     const onSavePostClicked = () => {
-        if (title && content) {
-            dispatch(postAdded(
-                title,
-                content,
-                userId,
-            ));
-            setTitle('');
-            setContent('');
+        if (canSave) {
+            try {
+                setAddRequestStatus('pending');
+                const post: Post = {
+                    title,
+                    body: content,
+                    userId,
+                    date: '',
+                    reactions: {
+                        thumbsUp: 0,
+                        wow: 0,
+                        heart: 0,
+                        rocket: 0,
+                        coffee: 0,
+                    },
+                    id: '',
+                };
+                dispatch(addNewPost(post)).unwrap();
+                setTitle('');
+                setContent('');
+                setUserId(0);
+            } catch (err) {
+                console.error('Failed to save the post', err);
+            } finally {
+                setAddRequestStatus('idle');
+            }
         }
     };
 
-    const canSave = Boolean(title) && Boolean(content) && Boolean(userId);
 
     const usersOptions = users.map(user => (
         <option key={user.id} value={user.id}>
             {user.name}
         </option>
     ));
-   
+
     return (
         <section>
             <h2>Add a New Post</h2>

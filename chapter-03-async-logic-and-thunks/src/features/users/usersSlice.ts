@@ -5,7 +5,7 @@ import axios from "axios";
 const USERS_URL = 'https://jsonplaceholder.typicode.com/users';
 
 interface User {
-    id: string;
+    id: number;
     name: string;
 }
 
