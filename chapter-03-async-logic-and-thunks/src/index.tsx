@@ -6,6 +6,9 @@ import PostList from "./features/posts/PostList";
 import {Provider} from "react-redux";
 import {store} from "./app/store";
 import AddPostForm from "./features/posts/AddPostForm";
+import {fetchUsers} from "./features/users/usersSlice";
+
+store.dispatch(fetchUsers());
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
