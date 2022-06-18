@@ -15,7 +15,7 @@ export interface Post {
     userId: string;
     id: string;
     title: string;
-    content: string;
+    body: string;
     date: string;
     reactions: Reactions;
 }
@@ -47,12 +47,12 @@ const postSlice = createSlice({
                 reducer(state, action: PayloadAction<Post>) {
                     state.posts.push(action.payload);
                 },
-                prepare(title: string, content: string, userId: string) {
+                prepare(title: string, body: string, userId: string) {
                     return {
                         payload: {
                             id: nanoid(),
                             title,
-                            content,
+                            body,
                             userId,
                             date: new Date().toISOString(),
                             reactions: {
@@ -97,7 +97,8 @@ const postSlice = createSlice({
                         return post;
                     });
 
-                    state.posts = state.posts.concat(loadedPosts);
+                    // state.posts = state.posts.concat(loadedPosts);
+                    state.posts = loadedPosts;
                 })
                 .addCase(fetchPosts.rejected, (state, action) => {
                     state.status = 'failed';
