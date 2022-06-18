@@ -1,12 +1,24 @@
 import {useAppSelector} from "../../hooks/useAppSelector";
-import {selectAllPosts} from "./postsSlice";
+import {useAppDispatch} from "../../hooks/useAppDispatch";
+import {useEffect} from "react";
+import {selectAllPosts, getPostStatus, getPostsError, fetchPosts} from "./postsSlice";
 import PostAuthor from "./PostAuthor";
 import TimeAgo from "./TimeAgo";
 import ReactionButtons from "./ReactionButtons";
 
 const PostList = () => {
+    const dispatch = useAppDispatch();
     // const posts = useSelector<RootState, { id: string, title: string, content: string }[]>(state => state.posts);
     const posts = useAppSelector(selectAllPosts);
+    const postsStatus = useAppSelector(getPostStatus);
+    const error = useAppSelector(getPostsError);
+
+    useEffect(() => {
+        if (postsStatus === 'idle') {
+            dispatch(fetchPosts());
+        }
+    }, [postsStatus, dispatch]);
+
     const renderPosts = posts.map(post => (
         <article key={post.id}>
             <h3>{post.title}</h3>

@@ -111,6 +111,9 @@ const postSlice = createSlice({
 // reference: https://redux.js.org/usage/usage-with-typescript#define-root-state-and-dispatch-types
 // export const selectAllPosts = (state: any) => state.posts;
 export const selectAllPosts = (state: RootState) => state.posts.posts;
+export const getPostStatus = (state: RootState) => state.posts.status;
+export const getPostsError = (state: RootState) => state.posts.error;
+
 export const {postAdded, reactionAdded} = postSlice.actions;
 
 export default postSlice.reducer;
