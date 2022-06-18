@@ -22,7 +22,7 @@ const PostList = () => {
     const renderPosts = posts.map(post => (
         <article key={post.id}>
             <h3>{post.title}</h3>
-            <h3>{post.content.substring(0, 100)}</h3>
+            <h3>{post.content?.substring(0, 100)}</h3>
             <p className="postCredit">
                 <PostAuthor userId={post.userId}/>
                 <TimeAgo timestamp={post.date}/>
