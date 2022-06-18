@@ -2,9 +2,6 @@ import {useAppSelector} from "../../hooks/useAppSelector";
 import {useAppDispatch} from "../../hooks/useAppDispatch";
 import React, {useEffect} from "react";
 import {selectAllPosts, getPostStatus, getPostsError, fetchPosts} from "./postsSlice";
-import PostAuthor from "./PostAuthor";
-import TimeAgo from "./TimeAgo";
-import ReactionButtons from "./ReactionButtons";
 import PostsExcerpt from "./PostsExcerpt";
 
 const PostList = () => {
@@ -26,7 +23,7 @@ const PostList = () => {
     } else if (postsStatus === 'succeeded') {
         const orderedPosts = posts.slice().sort((a, b) => b.date.localeCompare(a.date));
         content = orderedPosts.map(post => <PostsExcerpt key={post.id} post={post}/>);
-    } else if (postsStatus == 'failed') {
+    } else if (postsStatus === 'failed') {
         content = <p>{error}</p>;
     }
 

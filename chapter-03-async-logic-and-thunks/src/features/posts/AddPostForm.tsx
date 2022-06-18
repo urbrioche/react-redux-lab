@@ -1,6 +1,6 @@
 import {ChangeEvent, useState} from "react";
 import {useAppDispatch} from "../../hooks/useAppDispatch";
-import {postAdded, addNewPost, Status, Post} from "./postsSlice";
+import {addNewPost, Status, Post} from "./postsSlice";
 import {selectAllUsers} from "../users/usersSlice";
 import {useAppSelector} from "../../hooks/useAppSelector";
 
