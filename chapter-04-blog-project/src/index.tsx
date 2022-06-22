@@ -2,14 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import PostList from "./features/posts/PostList";
 import {Provider} from "react-redux";
 import {store} from "./app/store";
-import AddPostForm from "./features/posts/AddPostForm";
 import {fetchUsers} from "./features/users/usersSlice";
+import {fetchPosts} from "./features/posts/postsSlice";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import App from "./App";
 
+store.dispatch(fetchPosts());
 store.dispatch(fetchUsers());
 
 const root = ReactDOM.createRoot(
