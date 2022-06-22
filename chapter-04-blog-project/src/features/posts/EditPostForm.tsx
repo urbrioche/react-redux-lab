@@ -38,13 +38,17 @@ const EditPostForm = () => {
         if (canSave) {
             try {
                 setRequestStatus('pending');
+                // my idea is here should use await
+                // wait the async function complete then navigate to post/${postId}
+                // now the version will show previous data first and a few seconds later show the updated data
                 dispatch(updatePost({
                     id: post.id,
                     title: title || '',
                     body: content || '',
                     userId: userId || 0,
                     reactions: post.reactions,
-                    date: post.date,
+                    // omit date in updatePost signature using typeScript utility, since new date will be given in the slice extraReducers
+                    // date: post.date,
                 })).unwrap();
 
                 setTitle('');
