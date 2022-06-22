@@ -34,14 +34,14 @@ const EditPostForm = () => {
 
     const canSave = [title, content, userId].every(Boolean) && requestStatus === 'idle';
 
-    const onSavePostClicked = () => {
+    const onSavePostClicked = async () => {
         if (canSave) {
             try {
                 setRequestStatus('pending');
                 // my idea is here should use await
                 // wait the async function complete then navigate to post/${postId}
-                // now the version will show previous data first and a few seconds later show the updated data
-                dispatch(updatePost({
+                // the author don't use await 
+                await dispatch(updatePost({
                     id: post.id,
                     title: title || '',
                     body: content || '',
@@ -70,10 +70,10 @@ const EditPostForm = () => {
         >{user.name}</option>
     ));
 
-    const onDeletePostClicked = () => {
+    const onDeletePostClicked = async () => {
         try {
             setRequestStatus('pending');
-            dispatch(deletePost({id: post.id})).unwrap();
+            await dispatch(deletePost({id: post.id})).unwrap();
 
             setTitle('');
             setContent('');

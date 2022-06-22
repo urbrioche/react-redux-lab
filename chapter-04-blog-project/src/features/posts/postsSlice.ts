@@ -67,6 +67,7 @@ export const deletePost = createAsyncThunk('posts/deletePost', async (initialPos
         return err.message;
     }
 });
+
 const postSlice = createSlice({
         name: 'posts',
         initialState,
@@ -156,6 +157,15 @@ const postSlice = createSlice({
                     action.payload.date = new Date().toISOString();
                     const posts = state.posts.filter(post => post.id !== id);
                     state.posts = [...posts, action.payload];
+                })
+                .addCase(deletePost.fulfilled, (state, action: PayloadAction<Post>) => {
+                    if (!action.payload?.id) {
+                        console.log('Delete could not complete');
+                        console.log(action.payload);
+                        return;
+                    }
+                    const {id} = action.payload;
+                    state.posts = state.posts.filter(post => post.id !== id);
                 });
 
         }
