@@ -51,7 +51,7 @@ export const updatePost = createAsyncThunk('posts/updatePost', async (initialPos
         return response.data;
     } catch (err) {
         //return err.message;
-        return initialPost; // only for testing Redux!
+        return initialPost; // only for testing Redux! since we cannot really updatePost through the fake API
     }
 });
 
