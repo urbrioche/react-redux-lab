@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice, nanoid, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {RootState} from "../../app/store";
 import axios from "axios";
 import {sub} from "date-fns";
@@ -28,10 +28,12 @@ const initialState: {
     posts: Post[];
     status: Status;
     error: string | null;
+    count: number;
 } = {
     posts: [],
     status: 'idle',
     error: null,
+    count: 0,
 };
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
@@ -72,38 +74,15 @@ const postSlice = createSlice({
         name: 'posts',
         initialState,
         reducers: {
-            postAdded: {
-                reducer(state, action: PayloadAction<Post>) {
-                    state.posts.push(action.payload);
-                },
-                prepare(title: string, body: string, userId: number) {
-                    return {
-                        payload: {
-                            id: nanoid(),
-                            title,
-                            body,
-                            userId,
-                            date: new Date().toISOString(),
-                            reactions: {
-                                thumbsUp: 0,
-                                wow: 0,
-                                heart: 0,
-                                rocket: 0,
-                                coffee: 0
-                            }
-                        }
-                    };
-                }
-            },
-            // postAdded(state, action: PayloadAction<Post>) {
-            //     state.push(action.payload);
-            // }
             reactionAdded(state, action: PayloadAction<{ postId: string | number, reaction: keyof Reactions }>) {
                 const {postId, reaction} = action.payload;
                 const existingPost = state.posts.find(post => post.id === postId);
                 if (existingPost) {
                     existingPost.reactions[reaction]++;
                 }
+            },
+            increaseCount(state) {
+                state.count = state.count + 1;
             }
         },
         extraReducers: function (builder) {
@@ -177,8 +156,9 @@ const postSlice = createSlice({
 export const selectAllPosts = (state: RootState) => state.posts.posts;
 export const getPostStatus = (state: RootState) => state.posts.status;
 export const getPostsError = (state: RootState) => state.posts.error;
+export const getCount = (state: RootState) => state.posts.count;
 export const selectPostById = (state: RootState, postId: number) => state.posts.posts.find(post => post.id === postId);
 
-export const {postAdded, reactionAdded} = postSlice.actions;
+export const {increaseCount, reactionAdded} = postSlice.actions;
 
 export default postSlice.reducer;
